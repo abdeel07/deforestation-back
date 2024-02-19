@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -23,4 +25,7 @@ public class User {
     private String password;
 
     private Boolean isLogged;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 }
