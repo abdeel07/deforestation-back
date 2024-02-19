@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = { "http://localhost:3000" })
@@ -32,12 +34,15 @@ public class UserController {
 
     // User login
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
-        String result = userService.login(email, password);
-        if ("Login successful".equals(result)) {
-            return ResponseEntity.ok(result);
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody User loginUser) {
+        String email = loginUser.getEmail();
+        String password = loginUser.getPassword();
+        Map<String, Object> response = userService.login(email, password);
+
+        if (Boolean.TRUE.equals(response.get("success"))) {
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.badRequest().body(result);
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
@@ -45,7 +50,11 @@ public class UserController {
     @PostMapping("/logout/{id}")
     public ResponseEntity<String> logoutUser(@PathVariable Long id) {
         String result = userService.logout(id);
-        return ResponseEntity.ok(result);
+        if ("False".equals(result)) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
     }
 
     // Get user by ID

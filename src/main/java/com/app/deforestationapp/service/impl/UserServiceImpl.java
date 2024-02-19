@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -33,24 +36,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String email, String password) {
+    public Map<String, Object> login(String email, String password) {
+        Map<String, Object> response = new HashMap<>();
         User user = userRepository.findByEmail(email).orElse(null);
+
+        // Check if the user exists
         if (user == null) {
-            return "User not found";
+            response.put("success", false);
+            response.put("message", "User not found");
+            return response; // Early return to avoid further checks
         }
 
-        if (!user.getPassword().equals(password)) {
-            return "Invalid password";
+        // Check if the password is correct
+        if (!user.getPassword().equals(password)) { // Consider using password encoding and matching
+            response.put("success", false);
+            response.put("message", "Invalid password");
+            return response; // Early return to avoid further checks
         }
 
+        // Check if the user is already logged in
         if (Boolean.TRUE.equals(user.getIsLogged())) {
-            return "User already logged in";
+            response.put("success", false);
+            response.put("message", "User already logged in");
         } else {
+            // Log the user in
             user.setIsLogged(true);
             userRepository.save(user);
-            return "Login successful";
+            response.put("success", true);
+            response.put("userId", user.getId());
+            response.put("message", "Login successful");
         }
+
+        return response;
     }
+
 
     @Override
     public String logout(Long id) {
@@ -60,7 +79,7 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setIsLogged(false);
             userRepository.save(user);
-            return "Logout successful";
+            return "False";
         }
     }
 }

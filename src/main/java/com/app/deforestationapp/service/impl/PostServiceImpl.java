@@ -1,6 +1,7 @@
 package com.app.deforestationapp.service.impl;
 
 import com.app.deforestationapp.entity.Post;
+import com.app.deforestationapp.entity.enums.PostType;
 import com.app.deforestationapp.repository.PostRepository;
 import com.app.deforestationapp.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class PostServiceImpl implements PostService {
     public Post get(Long id) throws Exception {
         return postRepository.findById(id).orElseThrow(
                 () -> new Exception("Post not found for this id : " + id));
+    }
+
+    @Override
+    public List<Post> getByType(PostType type) {
+        return postRepository.findByType(type);
     }
 
     @Override

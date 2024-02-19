@@ -1,6 +1,7 @@
 package com.app.deforestationapp.controller;
 
 import com.app.deforestationapp.entity.Post;
+import com.app.deforestationapp.entity.enums.PostType;
 import com.app.deforestationapp.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,13 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.getAll();
+        return ResponseEntity.ok(posts);
+    }
+
+    // Get posts by type
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<Post>> getByType(@PathVariable PostType type) {
+        List<Post> posts = postService.getByType(type);
         return ResponseEntity.ok(posts);
     }
 
