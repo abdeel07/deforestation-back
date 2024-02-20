@@ -1,5 +1,8 @@
 package com.app.deforestationapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,6 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +28,10 @@ public class User {
     @Size(min = 6, max = 30)
     private String password;
 
-    private Boolean isLogged;
+    @Column
+    private Boolean isLogged = false;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference("user")
     private List<Comment> comments;
 }

@@ -1,5 +1,6 @@
 package com.app.deforestationapp.controller;
 
+import com.app.deforestationapp.dto.CommentDTO;
 import com.app.deforestationapp.entity.Comment;
 import com.app.deforestationapp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class CommentController {
 
     // Add new comment
     @PostMapping
-    public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
+    public ResponseEntity<Comment> addComment(@RequestBody CommentDTO comment) {
         Comment createdComment = commentService.add(comment);
         return ResponseEntity.ok(createdComment);
     }

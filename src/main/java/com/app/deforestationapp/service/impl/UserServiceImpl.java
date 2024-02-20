@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // If the email is not in use, proceed to save the new user
+        user.setIsLogged(false);
         return userRepository.save(user);
     }
 
