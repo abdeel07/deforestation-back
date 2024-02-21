@@ -5,7 +5,7 @@ import com.app.deforestationapp.entity.User;
 import java.util.Map;
 
 public interface UserService {
-    User add(User user);
+    User add(User user) throws Exception;
 
     User get(Long id) throws Exception;
 

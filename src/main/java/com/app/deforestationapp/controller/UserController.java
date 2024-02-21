@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -27,8 +28,11 @@ public class UserController {
         try {
             User savedUser = userService.add(user);
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+
+            return ResponseEntity.badRequest().body(error);
         }
     }
 

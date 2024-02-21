@@ -17,7 +17,6 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
-
     private final PostRepository postRepository;
 
     @Autowired

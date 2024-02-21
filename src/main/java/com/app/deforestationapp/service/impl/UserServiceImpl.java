@@ -20,10 +20,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User add(User user) {
+    public User add(User user) throws Exception {
         // Check if a user with the given email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new DataIntegrityViolationException("Email already in use");
+            throw new Exception("Email already in use");
         }
 
         // If the email is not in use, proceed to save the new user
