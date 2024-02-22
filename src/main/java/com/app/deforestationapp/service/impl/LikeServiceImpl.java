@@ -38,6 +38,10 @@ public class LikeServiceImpl implements LikeService {
 
             Like like = new Like(null, user, post);
             likeRepository.save(like);
+
+            post.setNbLike(post.getNbLike() + 1);
+            postRepository.save(post);
+
             return "Post liked successfully.";
         }
     }
@@ -47,6 +51,11 @@ public class LikeServiceImpl implements LikeService {
         Optional<Like> like = likeRepository.findByUserIdAndPostId(userId, postId);
         if (like.isPresent()) {
             likeRepository.delete(like.get());
+
+            Post post = postRepository.findById(postId).get();
+            post.setNbLike(post.getNbLike() - 1);
+            postRepository.save(post);
+
             return "Like removed successfully.";
         } else {
             return "Like does not exist.";
